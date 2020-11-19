@@ -10,6 +10,12 @@ import (
 	"github.com/unistack-org/micro/v3/codec"
 )
 
+type Marshaler struct{}
+
+var (
+	_ codec.Marshaler = &Marshaler{}
+)
+
 type jsonCodec struct {
 	buf *bytes.Buffer
 	mt  codec.MessageType
@@ -27,12 +33,16 @@ func (j *jsonCodec) String() string {
 	return "json-rpc"
 }
 
-func (j *jsonCodec) Marshal(v interface{}) ([]byte, error) {
+func (j *Marshaler) Marshal(v interface{}) ([]byte, error) {
 	return json.Marshal(v)
 }
 
-func (j *jsonCodec) Unmarshal(data []byte, v interface{}) error {
+func (j *Marshaler) Unmarshal(data []byte, v interface{}) error {
 	return json.Unmarshal(data, v)
+}
+
+func (j *Marshaler) String() string {
+	return "json-rpc"
 }
 
 func (j *jsonCodec) Write(m *codec.Message, b interface{}) error {
