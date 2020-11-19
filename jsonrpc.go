@@ -27,6 +27,14 @@ func (j *jsonCodec) String() string {
 	return "json-rpc"
 }
 
+func (j *jsonCodec) Marshal(v interface{}) ([]byte, error) {
+	return json.Marshal(v)
+}
+
+func (j *jsonCodec) Unmarshal(data []byte, v interface{}) error {
+	return json.Unmarshal(data, v)
+}
+
 func (j *jsonCodec) Write(m *codec.Message, b interface{}) error {
 	switch m.Type {
 	case codec.Request:
